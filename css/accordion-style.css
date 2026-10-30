@@ -1,0 +1,242 @@
+/* ════════════════════════════════════════════════════════════════
+   ACCORDION MENU — Dark Glass / Neon  (فقط CSS، بدون تغییر HTML)
+   ────────────────────────────────────────────────────────────────
+   نحوه‌ی استفاده:
+       <link rel="stylesheet" href="accordion-style.css">
+   (اگه داخل <style> کپی می‌کنی، خط @import باید اول باشه)
+
+   * بدون جاوااسکریپت: همه‌ی آیتم‌ها باز هستن + افکت‌های هاور و ورود
+   * اگه JS تو کلاس  .open  یا  .active  رو روی <li> ست کنه،
+     حالت آکاردئون واقعی (باز/بسته‌ی نرم) خودکار فعال می‌شه
+     — اگه اسم کلاست فرق داره، فقط سکشن ۶ رو ویرایش کن
+   ════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* ── ۱) کانتینر: پنل شیشه‌ای تیره با هاله‌ی نئون ─────────────────── */
+ul {
+  --acc-accent:  #8b6cff;   /* بنفش نئون */
+  --acc-accent2: #22d3ee;   /* فیروزه‌ای */
+  --acc-text:    #edf1ff;
+  --acc-muted:   #9aa4c0;
+
+  color-scheme: dark;
+  list-style: none;
+  margin: 0 auto;
+  padding: clamp(14px, 2.5vw, 22px);
+  max-width: 760px;
+  display: grid;
+  gap: 14px;
+  font-family: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--acc-text);
+  background:
+    radial-gradient(560px 280px at 12% -8%,   rgba(139,108,255,.22), transparent 60%),
+    radial-gradient(520px 300px at 108% 112%, rgba(34,211,238,.14),  transparent 60%),
+    linear-gradient(165deg, #0c1120, #080b14);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px -24px rgba(0,0,0,.75);
+}
+
+ul, ul *, ul *::before, ul *::after { box-sizing: border-box; }
+
+/* ── ۲) کارت هر آیتم ───────────────────────────────────────────── */
+ul li {
+  position: relative;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.015));
+  border: 1px solid rgba(255,255,255,.09);
+  overflow: hidden;
+  will-change: transform;
+  transition:
+    transform    .35s cubic-bezier(.22,1,.36,1),
+    border-color .35s ease,
+    box-shadow   .35s ease;
+  animation: acc-in .55s cubic-bezier(.22,1,.36,1) both;
+}
+ul li:nth-child(1) { animation-delay: .05s; }
+ul li:nth-child(2) { animation-delay: .13s; }
+ul li:nth-child(3) { animation-delay: .21s; }
+ul li:nth-child(4) { animation-delay: .29s; }
+
+/* خط نورانی لطیف روی لبه‌ی بالای کارت */
+ul li::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
+  opacity: .6;
+  pointer-events: none;
+}
+
+/* قاب گرادیانی که موقع هاور یا باز بودن روشن می‌شه */
+ul li::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--acc-accent), var(--acc-accent2) 55%, transparent);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity .4s ease;
+  pointer-events: none;
+}
+
+/* هاور / حالت باز: کارت بالا میاد و می‌درخشه */
+ul li:hover,
+ul li.open,
+ul li.active {
+  transform: translateY(-3px);
+  border-color: transparent;
+  box-shadow:
+    0 16px 36px -16px rgba(139,108,255,.55),
+    0 0 0 1px rgba(139,108,255,.25);
+}
+ul li:hover::after,
+ul li.open::after,
+ul li.active::after { opacity: 1; }
+
+/* ── ۳) تیتر: متن گرادیانی ─────────────────────────────────────── */
+ul li h3 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: #edf1ff;
+  font-size: clamp(1rem, .93rem + .35vw, 1.15rem);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: .01em;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  ul li h3 {
+    background: linear-gradient(90deg, #f8fafc 15%, #b9c5ff 50%, #f8fafc 85%);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: background-position .6s ease;
+  }
+  ul li:hover h3,
+  ul li.open h3,
+  ul li.active h3 { background-position: 95% center; }
+}
+
+/* ── ۴) آیکن +/− : چون <span class="icon"> خالیه، با CSS ساخته می‌شه ── */
+ul li .icon {
+  position: relative;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(139,108,255,.30), rgba(34,211,238,.22));
+  border: 1px solid rgba(255,255,255,.16);
+  transition:
+    transform     .45s cubic-bezier(.22,1,.36,1),
+    background    .35s ease,
+    box-shadow    .35s ease,
+    border-color  .35s ease;
+}
+ul li .icon::before,
+ul li .icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: #dfe6ff;
+  box-shadow: 0 0 8px rgba(139,108,255,.9);
+  transform: translate(-50%, -50%);
+  transition: transform .45s cubic-bezier(.22,1,.36,1);
+}
+ul li .icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+
+/* هاور: آیکن می‌چرخه و هاله می‌گیره */
+ul li:hover .icon {
+  transform: rotate(90deg);
+  box-shadow: 0 0 16px rgba(139,108,255,.55);
+}
+
+/* وقتی آیتم بازه: + می‌چرخه و تبدیل به − می‌شه */
+ul li.open .icon,
+ul li.active .icon {
+  transform: rotate(180deg);
+  background: linear-gradient(135deg, var(--acc-accent), var(--acc-accent2));
+  border-color: transparent;
+  box-shadow: 0 0 18px rgba(139,108,255,.65);
+}
+ul li.open .icon::after,
+ul li.active .icon::after { transform: translate(-50%, -50%) rotate(0deg); }
+
+/* ── ۵) متن توضیح ──────────────────────────────────────────────── */
+ul li p {
+  margin: 12px 0 0;
+  max-width: 62ch;
+  color: var(--acc-muted);
+  font-size: .95rem;
+  line-height: 1.9;
+  overflow: hidden;
+  max-height: 560px;
+  transition:
+    max-height  .5s cubic-bezier(.22,1,.36,1),
+    opacity     .4s ease,
+    margin-top  .5s cubic-bezier(.22,1,.36,1);
+    display: none;
+}
+
+/* ── ۶) حالت آکاردئون واقعی (اختیاری — با :has()) ────────────────
+   به محض اینکه JS کلاس open یا active رو روی یکی از <li>ها بذاره،
+   بقیه‌ی آیتم‌ها به‌نرمی بسته می‌شن. بدون JS هم هیچی نمی‌شکنه.
+   (مرورگرهای مدرن؛ قدیمی‌ها همه‌چیز رو باز نشون می‌دن) */
+ul:has(li.open)   li:not(.open)   p,
+ul:has(li.active) li:not(.active) p {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+
+/* فقط وقتی آکاردئون فعاله، تیترها نشانگر کلیک می‌گیرن */
+ul:has(li.open) h3,
+ul:has(li.active) h3 { cursor: pointer; }
+
+/* ── ۷) جزئیات ─────────────────────────────────────────────────── */
+ul ::selection { background: rgba(139,108,255,.45); color: #fff; }
+
+@keyframes acc-in {
+  from { opacity: 0; transform: translateY(16px) scale(.985); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* ── ۸) ریسپانسیو ──────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  ul { border-radius: 18px; gap: 10px; }
+  ul li { padding: 16px 18px; }
+  ul li p { font-size: .9rem; }
+  ul li .icon { width: 30px; height: 30px; }
+}
+
+/* ── ۹) دسترس‌پذیری: کاهش حرکت برای کسانی که ترجیح می‌دن ───────── */
+@media (prefers-reduced-motion: reduce) {
+  ul, ul * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+.myDis{
+  display: block;
+
+}
+.rotate{
+  transform: rotate(180deg);
+}

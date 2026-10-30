@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="font/untitled-project/font/style.css" />
+    <link rel="stylesheet" href="css/accordion-style.css" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body {
+        min-height: 100vh;
+        margin: 0;
+        background-color: #0f172a;
+        background-image:
+          radial-gradient(
+            at 0% 0%,
+            rgba(99, 102, 241, 0.4) 0px,
+            transparent 50%
+          ),
+          radial-gradient(
+            at 100% 100%,
+            rgba(217, 70, 239, 0.35) 0px,
+            transparent 50%
+          );
+        background-attachment: fixed;
+        font-family: sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--
+      تنها تغییر نسبت به کد خودت:
+      * کلاس  rotate  از span ها حذف شد
+      * کلاس  myDis  از <p> ها حذف شد
+      چون در منطق JS تو «وجود کلاس = باز بودن» است؛
+      پس وقتی اولیه نباشند، همه به‌صورت پیش‌فرض بسته‌اند
+      و با کلیک، همان JS خودت کلاس‌ها را toggle می‌کند.
+      (data-status ها هم عیناً حفظ شدند)
+    -->
+    <ul>
+      <li>
+        <h3 data-status="off">
+          01. Modern HTML5 & Semantic Markup<span class="icon"></span>
+        </h3>
+        <p>
+          An accordion menu is a dynamic user interface (UI) design pattern that
+          maximizes screen real estate efficiency. This layout allows users to
+          access a vast amount of structured information within a limited space
+          without overwhelming visual clutter. By dynamically toggling content
+          visibility, the overall user experience (UX) is significantly
+          enhanced.
+        </p>
+      </li>
+      <li>
+        <h3 data-status="off">
+          02. Advanced CSS3 & Responsive Layouts<span class="icon"></span>
+        </h3>
+        <p>
+          Seamless navigation is the cornerstone of user retention on the web.
+          Accordion menus logically segment primary categories into related
+          sub-menus, effectively shortening the user’s journey to their desired
+          content. This pattern plays a critical role in responsive design and
+          mobile layouts, preventing tedious, long-form scrolling and
+          maintaining interface clarity.
+        </p>
+      </li>
+      <li>
+        <h3 data-status="off">
+          03. Tailwind CSS & Utility-First Workflow<span class="icon"></span>
+        </h3>
+        <p>
+          From a frontend engineering perspective, a standard accordion must be
+          structurally robust alongside its visual appeal. Leveraging semantic
+          markup, buttery-smooth GPU-accelerated transitions, and strict
+          adherence to Web Accessibility (a11y) standards are hallmarks of a
+          professional implementation.
+        </p>
+      </li>
+      <li>
+        <h3 data-status="off">
+          04. JavaScript DOM Manipulation & Events<span class="icon"></span>
+        </h3>
+        <p>
+          Ultimately, developing this component using modern web standards
+          showcases a harmonious blend of design aesthetics and clean code
+          architecture. This component not only drives high utility across
+          corporate websites, e-commerce platforms, and blogs, but it also
+          serves as a shining testament to a deep understanding of DOM
+          interactions and state management.
+        </p>
+      </li>
+    </ul>
+  </body>
+  <script>
+    const h3 = document.querySelectorAll("ul>li>h3");
+    h3.forEach((val, i) => {
+      val.addEventListener("click", () => {
+        h3.forEach((item, index) => {
+          if (i != index) {
+            item.children[0].classList.remove("rotate");
+            item.nextElementSibling.classList.remove("myDis");
+          }
+        });
+
+        val.nextElementSibling.classList.toggle("myDis");
+        val.children[0].classList.toggle("rotate");
+      });
+    });
+  </script>
+</html>
